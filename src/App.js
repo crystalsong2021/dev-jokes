@@ -1,22 +1,51 @@
-import logo from './logo.svg';
 import './App.css';
+import googleOneTap from 'google-one-tap';
+import {userEffect, useState} from 'react';
+
+const options = {
+  client_id: process.env.DEV_JOKES_GOOGLE_CLIENT_ID,
+  auto_select: false,
+  cancel_on-tap_outside: false,
+  context: "signin"
+
+};
 
 function App() {
+  const [loginUser, setLoginUser] = useState(
+    localStorage.getItem('loginUser')
+      ? JSON.parse(localStorage.getItem('loginUser'))
+      : null
+  );
+  userEffect(() => {
+    googleOneTap(options, async (response) => {
+      console.log(response);
+      const res = await fetch("/api/google-login", {
+        method: "POST",
+        body: JSON.stringify({
+          token: response.credential,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+      setLoginUser(data);
+      localStorage.setItem("loginUser", JSON.stringify(data));
+    });
+
+
+  }, [loginUser])
+  
+  const handleLogout = () => {
+    localStorage.removeItem("loginData");
+    setLoginData(null);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-         Hello Crystal
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        HELLO CRYSTAL
       </header>
     </div>
   );
