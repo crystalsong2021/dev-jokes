@@ -1,13 +1,12 @@
 import './App.css';
 import googleOneTap from 'google-one-tap';
-import {userEffect, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 
 const options = {
-  client_id: process.env.DEV_JOKES_GOOGLE_CLIENT_ID,
+  client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
   auto_select: false,
-  cancel_on-tap_outside: false,
+  cancel_on_tap_outside: false,
   context: "signin"
-
 };
 
 function App() {
@@ -16,7 +15,7 @@ function App() {
       ? JSON.parse(localStorage.getItem('loginUser'))
       : null
   );
-  userEffect(() => {
+  useEffect(() => {
     googleOneTap(options, async (response) => {
       console.log(response);
       const res = await fetch("/api/google-login", {
@@ -33,19 +32,30 @@ function App() {
       setLoginUser(data);
       localStorage.setItem("loginUser", JSON.stringify(data));
     });
-
-
   }, [loginUser])
-  
+
   const handleLogout = () => {
-    localStorage.removeItem("loginData");
-    setLoginData(null);
+    localStorage.removeItem("loginUser");
+    setLoginUser(null);
   };
 
   return (
     <div className="App">
       <header className="App-header">
-        HELLO CRYSTAL
+        <h1>Implement "Google One-Tap Login" In React and Node.js</h1>
+        {console.log('User: ', loginUser)}
+        <div>
+          {loginUser ? (
+            <div>
+              <h3>
+                You "{loginUser.name}" logged in as {loginUser.email}
+              </h3>
+              <button onClick={handleLogout}>Logout</button>
+            </div>
+          ) : (
+            <div>Not logged in</div>
+          )}
+        </div>
       </header>
     </div>
   );
