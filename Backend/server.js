@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const fetch = require("cross-fetch");
 const { OAuth2Client } = require("google-auth-library");
 
 dotenv.config();
@@ -15,6 +16,7 @@ function upsert(array, item) {
     const i = array.findIndex((_item) => _item.email === item.email);
     if (i > -1) array[i] = item;
     else array.push(item);
+    console.log('user: ', users)
 }
 
 app.post("/api/google-login", async (req, res) => {
@@ -26,6 +28,9 @@ app.post("/api/google-login", async (req, res) => {
     });
 
     const { name, email, picture } = ticket.getPayload();
+    const jokes = await fetch('https://backend-omega-seven.vercel.app/api/getjoke');
+    const responseJokes = await jokes.json();
+    console.log(responseJokes)
     upsert(users, { name, email, picture });
     res.status(201);
     res.json({ name, email, picture });
