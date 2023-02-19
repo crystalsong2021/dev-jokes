@@ -1,6 +1,8 @@
 import './App.css';
 import googleOneTap from 'google-one-tap';
 import React, { useEffect, useState} from 'react';
+import { db } from './firebase';
+import { collection, getDocs } from "firebase/firestore"
 
 const options = {
   client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
@@ -10,11 +12,25 @@ const options = {
 };
 
 function App() {
+  const [users,setUsers] = useState([]);
+  const userCollection = collection(db, "users");
+
   const [loginUser, setLoginUser] = useState(
     localStorage.getItem('loginUser')
       ? JSON.parse(localStorage.getItem('loginUser'))
       : null
   );
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const data = await getDocs(userCollection);
+      setUsers(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
+
+    };
+
+    getUsers();
+  }, []);
+
   useEffect(() => {
     googleOneTap(options, async (response) => {
       console.log(response);
@@ -44,6 +60,12 @@ function App() {
       <header className="App-header">
         <h1>Implement "Google One-Tap Login" In React and Node.js</h1>
         {console.log('User: ', loginUser)}
+        {users.map(user => {
+          return <div>
+            <h4>name : {user.name}</h4>
+            <h4>email : {user.email}</h4>
+          </div>
+        })}
         <div>
           {loginUser ? (
             <div>
