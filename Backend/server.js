@@ -20,11 +20,11 @@ function upsert(array, item) {
 }
 
 app.post("/api/google-login", async (req, res) => {
-    // console.log('entering backend: ', req.body)
+    console.log('entering backend: ', req.body.token)
     const { token } = req.body;
     const ticket = await client.verifyIdToken({
         idToken: token,
-        audience: process.env.CLIENT_ID,
+        // audience: process.env.CLIENT_ID,
     });
 
     const { name, email, picture } = ticket.getPayload();
