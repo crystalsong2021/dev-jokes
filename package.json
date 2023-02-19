@@ -1,6 +1,6 @@
 {
   "name": "dev-jokes",
-  "proxy": "http://127.0.0.1:5000/",
+  "proxy": "http://127.0.0.1:8800/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -11,6 +11,7 @@
     "express": "^4.18.2",
     "google-auth-library": "^8.7.0",
     "google-one-tap": "^1.0.6",
+    "nodemon": "^2.0.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
