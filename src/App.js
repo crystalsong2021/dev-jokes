@@ -1,8 +1,9 @@
 import './App.css';
 import googleOneTap from 'google-one-tap';
 import React, { useEffect, useState} from 'react';
-import { db } from './firebase';
-import { collection, getDocs } from "firebase/firestore"
+import { db } from './firebase/firebaseConfig';
+import { collection, doc, getDoc, setDoc, query, where } from "firebase/firestore";
+import SubmitJokes from './firebase/SubmitJoke';
 
 const options = {
   client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
@@ -12,8 +13,12 @@ const options = {
 };
 
 function App() {
-  const [users,setUsers] = useState([]);
-  const userCollection = collection(db, "users");
+  const [jokes,setJokes] = useState([]);
+  const [documentID, setDocumentID] = useState("nangma@gmail.com");
+
+  const jokesRef = collection(db, "users");
+
+
 
   const [loginUser, setLoginUser] = useState(
     localStorage.getItem('loginUser')
@@ -21,15 +26,7 @@ function App() {
       : null
   );
 
-  useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(userCollection);
-      setUsers(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
 
-    };
-
-    getUsers();
-  }, []);
 
   useEffect(() => {
     googleOneTap(options, async (response) => {
@@ -47,8 +44,35 @@ function App() {
       const data = await res.json();
       setLoginUser(data);
       localStorage.setItem("loginUser", JSON.stringify(data));
+
     });
   }, [loginUser])
+
+  useEffect(() => {
+    const getJokes = async () => {
+      const docRef = doc(db, "users", loginUser.email);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        console.log("document data: ", docSnap.data());
+      } else {
+        const result = await setDoc(doc(jokesRef, loginUser.email), {
+          name: loginUser.name,
+          email: loginUser.email,
+          picture: loginUser.picture,
+          jokes: []
+        })
+        console.log('document data after created: ', result);
+      }
+
+      // const result = await query(jokesRef, where("email", "==", "loginUser.email"));
+      // console.log('Data-jokes---', result.data());
+      // setUsers(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
+
+    };
+
+    getJokes();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("loginUser");
@@ -58,14 +82,23 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Implement "Google One-Tap Login" In React and Node.js</h1>
+        <SubmitJokes documentID={documentID}/>
         {console.log('User: ', loginUser)}
-        {users.map(user => {
+
+
+
+        {/* listing all the users */}
+        {jokes && jokes.map(joke => {
           return <div>
-            <h4>name : {user.name}</h4>
-            <h4>email : {user.email}</h4>
+            <h4>Question : {joke.question}</h4>
+            <h4>Answer : {joke.answer}</h4>
           </div>
         })}
+
+
+
+
+
         <div>
           {loginUser ? (
             <div>
