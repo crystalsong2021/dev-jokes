@@ -103,15 +103,15 @@ function App() {
 
         </header>
         <div className="bodyContainer">
-          <div className="SubmitJokes">
-            <SubmitJokes documentID={documentID}/>
+          <div className="SavedJokes">
+              <SavedJokes jokes={jokes}/>
           </div>
           <div className="GenerateJokes">
             <GenerateJokes documentID={documentID}/>
           </div>
-        </div>
-        <div className="SavedJokes">
-            <SavedJokes jokes={jokes}/>
+          <div className="SubmitJokes">
+            <SubmitJokes documentID={documentID}/>
+          </div>
         </div>
       </div>
     </div>

@@ -33,16 +33,22 @@
   justify-content: space-around;
 }
 .GenerateJokes {
-  background-color: bisque;
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.7),
+    rgba(161, 173, 243, 0.3)
+  );
   border-radius: 2rem;
   padding: 2%;
   margin: 2%;
+  height: 20vh;
 }
 .SubmitJokes {
-  background-color: red;
+  background-color: rgba(241, 238, 238, 0.274);
   border-radius: 2rem;
   padding: 2%;
   margin: 2%;
+  height: 10vh;
 }
 .SavedJokes {
   text-align: center;
@@ -52,11 +58,15 @@
     rgba(255, 255, 255, 0.3)
   );
   border-radius: 2rem;
+  padding: 2%;
+  margin: 2%;
+  height: 25vh;
 }
 .jokeContainer {
-  background-color: aqua;
+  /* background-color: aqua; */
   border-radius: 2rem;
-  padding: 2%;
+  height: 15vh;
+  padding: 5%;
   margin: 2%;
 }
 .btn-logout {
@@ -70,10 +80,37 @@
   top: 1.2%;
   right: 5%;
 }
+.right-arrow {
+  position: relative;
+  top: 50px;
+  right: -50%;
+  font-size: 3rem;
+  color: #96dedaba;
+  z-index: 10;
+  cursor: pointer;
+  user-select: none;
+}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.left-arrow {
+  position: relative;
+  top: 50px;
+  left: -50%;
+  font-size: 3rem;
+  color: #96dedaba;
+  z-index: 10;
+  cursor: pointer;
+  user-select: none;
+}
+
+.slide {
+  opacity: 0;
+  transition-duration: 1s ease;
+}
+
+.slide.active {
+  opacity: 1;
+  transition-duration: 1s;
+  transform: scale(1.08);
 }
 
 

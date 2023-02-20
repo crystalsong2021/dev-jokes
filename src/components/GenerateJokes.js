@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { doc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from '../firebase/firebaseConfig';
+import { BsSave } from "react-icons/bs";
 
 function GenerateJokes({documentID}) {
   const [punchJoke, setPunchJoke] = useState("");
@@ -36,7 +37,7 @@ function GenerateJokes({documentID}) {
           {
             saveJoke
             ? <button>saved</button>
-            : <button onClick={createJoke}>save</button>
+            : <BsSave onClick={createJoke}/>
           }
         </div>
       }
