@@ -27,13 +27,13 @@ function App() {
     );
 
     const getJokes = async () => {
-      const docRef = doc(db, "users", loginUser.email);
+      const docRef = doc(db, "users", documentID);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         setJokes(docSnap.data().jokes);
       } else {
-        const result = await setDoc(doc(jokesRef, loginUser.email), {
+        const result = await setDoc(doc(jokesRef, documentID), {
           name: loginUser.name,
           email: loginUser.email,
           picture: loginUser.picture,
@@ -74,39 +74,43 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <GenerateJokes documentID={documentID}/>
-        <SubmitJokes documentID={documentID}/>
-        {console.log('User: ', documentID)
-        }
-
-
-
-        {/* listing all the users */}
-        {jokes && jokes.map((joke, i) => {
-          return <div key={i}>
-            <h4>Question : {joke.question}</h4>
-            <h4>Punchline : {joke.punchline}</h4>
+      <div className="Glass">
+        <header className="App-header">
+          <div>
+            {loginUser ? (
+              <div>
+                <h3>
+                  You "{loginUser.name}" logged in as {loginUser.email}
+                </h3>
+                <button onClick={handleLogout}>Logout</button>
+              </div>
+            ) : (
+              <div>Not logged in</div>
+            )}
           </div>
-        })}
 
+        </header>
+        <div className="Body">
+          <div className="GenerateJokes">
+            <GenerateJokes documentID={documentID}/>
+          </div>
 
+          <div className="SubmitJokes">
+            <SubmitJokes documentID={documentID}/>
+          </div>
 
-
-
-        <div>
-          {loginUser ? (
-            <div>
-              <h3>
-                You "{loginUser.name}" logged in as {loginUser.email}
-              </h3>
-              <button onClick={handleLogout}>Logout</button>
-            </div>
-          ) : (
-            <div>Not logged in</div>
-          )}
+          <div className="SavedJokes">
+            {/* listing all the users */}
+            {jokes && jokes.map((joke, i) => {
+              return <div key={i}>
+                <h4>Question : {joke.question}</h4>
+                <h4>Punchline : {joke.punchline}</h4>
+              </div>
+            })}
+          </div>
         </div>
-      </header>
+      </div>
+
     </div>
   );
 }

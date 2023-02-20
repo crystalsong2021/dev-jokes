@@ -5,6 +5,7 @@ import { db } from '../firebase/firebaseConfig';
 function GenerateJokes({documentID}) {
   console.log('documentID generatejokes->', documentID)
   const [punchJoke, setPunchJoke] = useState("");
+  const [saveJoke, setSaveJoke] = useState(false);
 
   const punchJokes = async() => {
     const joke = await fetch('https://backend-omega-seven.vercel.app/api/getjoke');
@@ -20,8 +21,8 @@ function GenerateJokes({documentID}) {
             question: punchJoke.question,
             punchline: punchJoke.punchline
         })
-
     });
+    setSaveJoke(true);
   }
   return(
     <div>
@@ -31,7 +32,10 @@ function GenerateJokes({documentID}) {
         <div>
           <h5>{punchJoke.question}</h5>
           <p>{punchJoke.punchline}</p>
-          <button onClick={createJoke}>save</button>
+          {saveJoke
+            ? <button>saved</button>
+            : <button onClick={createJoke}>save</button>
+          }
         </div>
       }
     </div>

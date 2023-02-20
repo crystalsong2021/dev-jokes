@@ -10,17 +10,17 @@ const app = express();
 
 app.use(express.json());
 
-const users = [];
+// const users = [];
 
-function upsert(array, item) {
-    const i = array.findIndex((_item) => _item.email === item.email);
-    if (i > -1) array[i] = item;
-    else array.push(item);
-    console.log('user: ', users)
-}
+// function upsert(array, item) {
+//     const i = array.findIndex((_item) => _item.email === item.email);
+//     if (i > -1) array[i] = item;
+//     else array.push(item);
+//     console.log('user: ', users)
+// }
 
 app.post("/api/google-login", async (req, res) => {
-    console.log('entering backend: ', req.body.token)
+    // console.log('entering backend: ', req.body.token)
     const { token } = req.body;
     const ticket = await client.verifyIdToken({
         idToken: token,
@@ -28,10 +28,10 @@ app.post("/api/google-login", async (req, res) => {
     });
 
     const { name, email, picture } = ticket.getPayload();
-    const jokes = await fetch('https://backend-omega-seven.vercel.app/api/getjoke');
-    const responseJokes = await jokes.json();
-    console.log(responseJokes)
-    upsert(users, { name, email, picture });
+    // const jokes = await fetch('https://backend-omega-seven.vercel.app/api/getjoke');
+    // const responseJokes = await jokes.json();
+    // console.log(responseJokes)
+    // upsert(users, { name, email, picture });
     res.status(201);
     res.json({ name, email, picture });
 });
