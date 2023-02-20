@@ -4,65 +4,33 @@ import React, { useEffect, useState} from 'react';
 import { db } from './firebase/firebaseConfig';
 import { collection, doc, getDoc, setDoc, query, where } from "firebase/firestore";
 import SubmitJokes from './firebase/SubmitJoke';
+import GenerateJokes from './components/GenerateJokes'
 
 const options = {
-  client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-  auto_select: false,
-  cancel_on_tap_outside: false,
-  context: "signin"
+    client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+    auto_select: false,
+    cancel_on_tap_outside: false,
+    context: "signin"
 };
 
 function App() {
-  const [jokes,setJokes] = useState([]);
-  const [documentID, setDocumentID] = useState(
-    localStorage.getItem('loginUser')
-    ? JSON.parse(localStorage.getItem('loginUser')).email
-    : null
-  );
-
-  const jokesRef = collection(db, "users");
-
-
-
-  const [loginUser, setLoginUser] = useState(
-    localStorage.getItem('loginUser')
-      ? JSON.parse(localStorage.getItem('loginUser'))
-      : null
-  );
-
-
-
-  useEffect(() => {
-    googleOneTap(options, async (response) => {
-      // console.log(response);
-      const res = await fetch("/api/google-login", {
-        method: "POST",
-        body: JSON.stringify({
-          token: response.credential,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await res.json();
-      console.log('Data--', data)
-      setLoginUser(data);
-      setDocumentID(data.email);
-      localStorage.setItem("loginUser", JSON.stringify(data));
-      getJokes();
-
-    });
-  }, [loginUser])
-
+    const [jokes,setJokes] = useState([]);
+    const [documentID, setDocumentID] = useState(
+      localStorage.getItem('loginUser')
+      ? JSON.parse(localStorage.getItem('loginUser')).email
+      : "janejoe@unknown.com"
+    );
+    const [loginUser, setLoginUser] = useState(
+      localStorage.getItem('loginUser')
+        ? JSON.parse(localStorage.getItem('loginUser'))
+        : null
+    );
 
     const getJokes = async () => {
-      console.log('get Jokes l56-->', documentID)
       const docRef = doc(db, "users", loginUser.email);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        console.log("document data: ", docSnap.data());
         setJokes(docSnap.data().jokes);
       } else {
         const result = await setDoc(doc(jokesRef, loginUser.email), {
@@ -71,15 +39,33 @@ function App() {
           picture: loginUser.picture,
           jokes: []
         })
-        console.log('document data after created: ', result);
       }
-
-      // const result = await query(jokesRef, where("email", "==", "loginUser.email"));
-      // console.log('Data-jokes---', result.data());
-      // setUsers(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
-
     };
 
+    const jokesRef = collection(db, "users");
+
+    useEffect(() => {
+        googleOneTap(options, async (response) => {
+          // console.log(response);
+          const res = await fetch("/api/google-login", {
+            method: "POST",
+            body: JSON.stringify({
+              token: response.credential,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          const data = await res.json();
+          // console.log('Data--', data)
+          setLoginUser(data);
+          setDocumentID(data.email);
+          localStorage.setItem("loginUser", JSON.stringify(data));
+          getJokes();
+
+        });
+    }, [loginUser])
 
   const handleLogout = () => {
     localStorage.removeItem("loginUser");
@@ -89,17 +75,18 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <GenerateJokes documentID={documentID}/>
         <SubmitJokes documentID={documentID}/>
-        {console.log('User: ', loginUser.email)
+        {console.log('User: ', documentID)
         }
 
 
 
         {/* listing all the users */}
-        {jokes && jokes.map(joke => {
-          return <div>
+        {jokes && jokes.map((joke, i) => {
+          return <div key={i}>
             <h4>Question : {joke.question}</h4>
-            <h4>Answer : {joke.answer}</h4>
+            <h4>Punchline : {joke.punchline}</h4>
           </div>
         })}
 
