@@ -14,7 +14,11 @@ const options = {
 
 function App() {
   const [jokes,setJokes] = useState([]);
-  const [documentID, setDocumentID] = useState("nangma@gmail.com");
+  const [documentID, setDocumentID] = useState(
+    localStorage.getItem('loginUser')
+    ? JSON.parse(localStorage.getItem('loginUser')).email
+    : null
+  );
 
   const jokesRef = collection(db, "users");
 
@@ -30,7 +34,7 @@ function App() {
 
   useEffect(() => {
     googleOneTap(options, async (response) => {
-      console.log(response);
+      // console.log(response);
       const res = await fetch("/api/google-login", {
         method: "POST",
         body: JSON.stringify({
@@ -42,20 +46,24 @@ function App() {
       });
 
       const data = await res.json();
+      console.log('Data--', data)
       setLoginUser(data);
+      setDocumentID(data.email);
       localStorage.setItem("loginUser", JSON.stringify(data));
+      getJokes();
 
     });
   }, [loginUser])
 
-  useEffect(() => {
+
     const getJokes = async () => {
+      console.log('get Jokes l56-->', documentID)
       const docRef = doc(db, "users", loginUser.email);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         console.log("document data: ", docSnap.data());
-        setJokes(docSnap.data().jokes)
+        setJokes(docSnap.data().jokes);
       } else {
         const result = await setDoc(doc(jokesRef, loginUser.email), {
           name: loginUser.name,
@@ -72,8 +80,6 @@ function App() {
 
     };
 
-    getJokes();
-  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("loginUser");
@@ -84,7 +90,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <SubmitJokes documentID={documentID}/>
-        {console.log('User: ', loginUser)}
+        {console.log('User: ', loginUser.email)
+        }
 
 
 
