@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { collection, doc, addDoc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
+import { doc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from '../firebase/firebaseConfig';
 
 function GenerateJokes({documentID}) {
-  console.log('documentID generatejokes->', documentID)
   const [punchJoke, setPunchJoke] = useState("");
   const [saveJoke, setSaveJoke] = useState(false);
 
@@ -12,11 +11,13 @@ function GenerateJokes({documentID}) {
     const responseJoke = await joke.json();
     console.log(responseJoke[0])
     setPunchJoke(responseJoke[0])
-
+    if (saveJoke) {
+      setSaveJoke(false)
+    }
   };
   const createJoke = async () => {
     const documentRef = doc(db, "users", documentID);
-    const res = await updateDoc(documentRef, {
+    await updateDoc(documentRef, {
         jokes: arrayUnion({
             question: punchJoke.question,
             punchline: punchJoke.punchline
@@ -32,7 +33,8 @@ function GenerateJokes({documentID}) {
         <div>
           <h5>{punchJoke.question}</h5>
           <p>{punchJoke.punchline}</p>
-          {saveJoke
+          {
+            saveJoke
             ? <button>saved</button>
             : <button onClick={createJoke}>save</button>
           }
