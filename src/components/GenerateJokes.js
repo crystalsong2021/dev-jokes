@@ -3,6 +3,8 @@ import { doc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from '../firebase/firebaseConfig';
 import { BsSave } from "react-icons/bs";
 import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 
 function GenerateJokes({documentID}) {
   const [punchJoke, setPunchJoke] = useState("");
@@ -40,7 +42,19 @@ function GenerateJokes({documentID}) {
           {
             saveJoke
             ? <Button>saved</Button>
-            : <BsSave onClick={createJoke}/>
+            : (
+                <Tooltip title="Save">
+                  <IconButton>
+                    <BsSave
+                      style = {{cursor: "pointer"}}
+                      onClick={createJoke}
+                    />
+                  </IconButton>
+
+                </Tooltip>
+
+              )
+
           }
         </div>
       }

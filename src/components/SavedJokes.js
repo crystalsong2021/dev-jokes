@@ -28,8 +28,8 @@ function SavedJokes({ jokes }) {
               index === current &&
               (
                 <>
-                  <h4>{joke.question}</h4>
-                  <h4>Punchline : {joke.punchline}</h4>
+                  <h4 style={{margin:"3px"}}>{joke.question}</h4>
+                  <h4>Punchline : </h4> {joke.punchline}
 
                 </>
               )

@@ -62,6 +62,8 @@
 }
 .jokeContainer {
   /* background-color: aqua; */
+  position: relative;
+  top: -50px;
   border-radius: 2rem;
   overflow-wrap: break-word;
   height: 15vh;
@@ -81,7 +83,7 @@
 }
 .right-arrow {
   position: relative;
-  top: 50px;
+  top: 60%;
   right: -50%;
   font-size: 3rem;
   color: #96dedaba;
@@ -92,7 +94,7 @@
 
 .left-arrow {
   position: relative;
-  top: 50px;
+  top: 60%;
   left: -50%;
   font-size: 3rem;
   color: #96dedaba;
