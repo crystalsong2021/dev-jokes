@@ -55,6 +55,7 @@ function App() {
 
       if (docSnap.exists()) {
         console.log("document data: ", docSnap.data());
+        setJokes(docSnap.data().jokes)
       } else {
         const result = await setDoc(doc(jokesRef, loginUser.email), {
           name: loginUser.name,

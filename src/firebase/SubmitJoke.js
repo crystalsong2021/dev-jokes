@@ -8,18 +8,18 @@ function SubmitJokes({documentID}) {
 
     const documentRef = doc(db, "users", documentID);
 
-    const [newQuestion, setNewQuestion] = useState("");
-    const [newAnswer, setNewAnswer] = useState("");
+    const [question, setQuestion] = useState("");
+    const [punchline, setPunchline] = useState("");
     const createJoke = async () => {
         const res = await updateDoc(documentRef, {
             jokes: arrayUnion({
-                question: newQuestion,
-                answer: newAnswer
+                question: question,
+                answer: punchline
             })
 
-        })
-
-        // console.log("result-->", res.id)
+        });
+        setQuestion("");
+        setPunchline("");
     }
 
     return (
@@ -27,13 +27,13 @@ function SubmitJokes({documentID}) {
             <input
                 placeholder="Question..."
                 onChange={ (event) => {
-                    setNewQuestion(event.target.value);
+                    setQuestion(event.target.value);
                 }}
             />
             <input
-                placeholder="Answer..."
+                placeholder="Punchline..."
                 onChange={ (event) => {
-                    setNewAnswer(event.target.value);
+                    setPunchline(event.target.value);
                 }}
             />
 
