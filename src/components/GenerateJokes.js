@@ -27,7 +27,7 @@ function GenerateJokes({documentID}) {
   }
   return(
     <div>
-      <button onClick={punchJokes}> Punch Jokes </button>
+      <button onClick={punchJokes}> Joke Generator </button>
       {
         punchJoke &&
         <div>

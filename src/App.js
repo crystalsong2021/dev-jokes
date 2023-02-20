@@ -7,6 +7,7 @@ import SubmitJokes from './components/SubmitJoke';
 import GenerateJokes from './components/GenerateJokes';
 import SavedJokes from './components/SavedJokes';
 
+
 const options = {
     client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
     auto_select: false,
@@ -81,6 +82,9 @@ function App() {
     <div className="App">
       <div className="glass">
         <header className="App-header">
+          <button className="btn-logout" onClick={handleLogout}>
+            logout
+          </button>
           <div>
             {loginUser ? (
               <div>
@@ -91,7 +95,6 @@ function App() {
                   Make someone laugh today with these jokes.
                   It will make you feel good too!
                 </p>
-                <button onClick={handleLogout}>Logout</button>
               </div>
             ) : (
               <div>Not logged in</div>
@@ -100,18 +103,17 @@ function App() {
 
         </header>
         <div className="bodyContainer">
-          <div className="GenerateJokes">
-            <GenerateJokes documentID={documentID}/>
-          </div>
-          <div className="SavedJokes">
-            <SavedJokes jokes={jokes}/>
-          </div>
           <div className="SubmitJokes">
             <SubmitJokes documentID={documentID}/>
           </div>
+          <div className="GenerateJokes">
+            <GenerateJokes documentID={documentID}/>
+          </div>
+        </div>
+        <div className="SavedJokes">
+            <SavedJokes jokes={jokes}/>
         </div>
       </div>
-
     </div>
   );
 }
