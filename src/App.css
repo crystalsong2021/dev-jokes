@@ -5,8 +5,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-
 }
 .glass {
   background: white;
@@ -48,7 +46,7 @@
   border-radius: 2rem;
   padding: 2%;
   margin: 2%;
-  height: 10vh;
+  height: 20vh;
 }
 .SavedJokes {
   text-align: center;
@@ -65,6 +63,7 @@
 .jokeContainer {
   /* background-color: aqua; */
   border-radius: 2rem;
+  overflow-wrap: break-word;
   height: 15vh;
   padding: 5%;
   margin: 2%;

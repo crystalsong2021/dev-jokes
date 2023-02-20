@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { doc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from '../firebase/firebaseConfig';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 function SubmitJokes({documentID}) {
 
@@ -23,13 +25,18 @@ function SubmitJokes({documentID}) {
   }
   return (
     <div>
-      <input
+      <p>
+        Got a cool joke? Save it here...
+      </p>
+      <TextField
+        style={{padding: 5, margin: '5px'}}
         placeholder={question}
         onChange={ (event) => {
           setQuestion(event.target.value);
         }}
       />
-      <input
+      <TextField
+        style={{padding: 5, margin: '5px'}}
         placeholder={punchline}
         onChange={ (event) => {
           setPunchline(event.target.value);
@@ -37,8 +44,14 @@ function SubmitJokes({documentID}) {
       />
       {
         saveJoke
-        ? <button> Your awesome joke is saved </button>
-        : <button onClick={createJoke}> Submit Joke </button>
+        ? <Button style={{padding: 5}}> Your awesome joke is saved </Button>
+        : <Button
+            style={{padding: 5, margin: "5px", position:"relative", top:"25px"}}
+            variant="outlined"
+            onClick={createJoke}
+          >
+            Submit Joke
+          </Button>
       }
     </div>
   )

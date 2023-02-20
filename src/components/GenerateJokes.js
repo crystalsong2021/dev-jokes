@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { doc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from '../firebase/firebaseConfig';
 import { BsSave } from "react-icons/bs";
+import Button from '@mui/material/Button';
 
 function GenerateJokes({documentID}) {
   const [punchJoke, setPunchJoke] = useState("");
@@ -28,7 +29,9 @@ function GenerateJokes({documentID}) {
   }
   return(
     <div>
-      <button onClick={punchJokes}> Joke Generator </button>
+      <Button variant="outlined" onClick={punchJokes}>
+        Click me... to generate joke
+      </Button>
       {
         punchJoke &&
         <div>
@@ -36,7 +39,7 @@ function GenerateJokes({documentID}) {
           <p>{punchJoke.punchline}</p>
           {
             saveJoke
-            ? <button>saved</button>
+            ? <Button>saved</Button>
             : <BsSave onClick={createJoke}/>
           }
         </div>
