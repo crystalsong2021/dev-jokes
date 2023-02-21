@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 
-function GenerateJokes({documentID}) {
+function GenerateJokes({documentID, updateJokes}) {
   const [punchJoke, setPunchJoke] = useState("");
   const [saveJoke, setSaveJoke] = useState(false);
 
@@ -28,6 +28,7 @@ function GenerateJokes({documentID}) {
         })
     });
     setSaveJoke(true);
+    updateJokes(punchJoke);
   }
   return(
     <div>

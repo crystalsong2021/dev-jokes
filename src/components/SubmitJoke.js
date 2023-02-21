@@ -5,7 +5,7 @@ import { db } from '../firebase/firebaseConfig';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-function SubmitJokes({documentID}) {
+function SubmitJokes({documentID, updateJokes}) {
 
   const documentRef = doc(db, "users", documentID);
   const [question, setQuestion] = useState("question...");
@@ -22,6 +22,10 @@ function SubmitJokes({documentID}) {
     setQuestion("");
     setPunchline("");
     setSaveJoke(true);
+    updateJokes({
+      question: question,
+      answer: punchline
+    });
   }
   return (
     <div>

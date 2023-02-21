@@ -15,29 +15,30 @@ function SavedJokes({ jokes }) {
 
   return (
     <div className="jokeContainer">
-    {/* listing all the users */}
-    < BsFillArrowLeftSquareFill className="left-arrow" onClick={prevJoke} />
-    < BsFillArrowRightSquareFill className="right-arrow" onClick={nextJoke}/>
-    {
-      jokes && jokes.map((joke, index) => {
-        return (
-          <div className={index === current ? "slide active" : "slide"}
-            key={index}
-          >
-            {
-              index === current &&
-              (
-                <>
-                  <h4 style={{margin:"3px"}}>{joke.question}</h4>
-                  <h4>Punchline : </h4> {joke.punchline}
+      <p>All your saved jokes are shown here</p>
+      {/* listing all the users */}
+      < BsFillArrowLeftSquareFill className="left-arrow" onClick={prevJoke} />
+      < BsFillArrowRightSquareFill className="right-arrow" onClick={nextJoke} />
+      {
+        jokes && jokes.map((joke, index) => {
+          return (
+            <div className={index === current ? "slide active" : "slide"}
+              key={index}
+            >
+              {
+                index === current &&
+                (
+                  <>
+                    <h4 style={{margin:"3px"}}>{joke.question}</h4>
+                    <h4>Punchline : </h4> {joke.punchline}
 
-                </>
-              )
-            }
-          </div>
-        )
-      })
-    }
+                  </>
+                )
+              }
+            </div>
+          )
+        })
+      }
     </div>
   )
 }

@@ -46,6 +46,10 @@ function App() {
     }
   };
 
+  const updateJokes = (punchJoke) => {
+    setJokes([...jokes, punchJoke]);
+  }
+
   const jokesRef = collection(db, "users");
 
   useEffect(() => {
@@ -107,10 +111,16 @@ function App() {
               <SavedJokes jokes={jokes}/>
           </div>
           <div className="GenerateJokes">
-            <GenerateJokes documentID={documentID}/>
+            <GenerateJokes
+              documentID={documentID}
+              updateJokes={updateJokes}
+            />
           </div>
           <div className="SubmitJokes">
-            <SubmitJokes documentID={documentID}/>
+            <SubmitJokes
+              documentID={documentID}
+              updateJokes={updateJokes}
+            />
           </div>
         </div>
       </div>
