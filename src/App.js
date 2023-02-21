@@ -47,7 +47,7 @@ function App() {
   };
 
   const updateJokes = (punchJoke) => {
-    setJokes([...jokes, punchJoke]);
+    setJokes([punchJoke, ...jokes]);
   }
 
   const jokesRef = collection(db, "users");

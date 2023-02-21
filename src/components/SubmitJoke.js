@@ -6,57 +6,56 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 function SubmitJokes({documentID, updateJokes}) {
-
   const documentRef = doc(db, "users", documentID);
-  const [question, setQuestion] = useState("question...");
-  const [punchline, setPunchline] = useState("punchline...");
+  const [punchJoke, setPunchJoke] = useState({question: "", punchline: ""});
   const [saveJoke, setSaveJoke] = useState(false);
 
-  const createJoke = async () => {
+  const createJoke = async (event) => {
+    event.preventDefault();
+    setPunchJoke({question:"", punchline: ""});
     await updateDoc(documentRef, {
-      jokes: arrayUnion({
-        question: question,
-        answer: punchline
-      })
+      jokes: arrayUnion(punchJoke)
     });
-    setQuestion("");
-    setPunchline("");
     setSaveJoke(true);
-    updateJokes({
-      question: question,
-      answer: punchline
-    });
+    updateJokes(punchJoke);
   }
+
   return (
     <div>
       <p>
         Got a cool joke? Save it here...
       </p>
-      <TextField
-        style={{padding: 5, margin: '5px'}}
-        placeholder={question}
-        onChange={ (event) => {
-          setQuestion(event.target.value);
-        }}
-      />
-      <TextField
-        style={{padding: 5, margin: '5px'}}
-        placeholder={punchline}
-        onChange={ (event) => {
-          setPunchline(event.target.value);
-        }}
-      />
-      {
-        saveJoke
-        ? <Button style={{padding: 5}}> Your awesome joke is saved </Button>
-        : <Button
-            style={{padding: 5, margin: "5px", position:"relative", top:"25px"}}
-            variant="outlined"
-            onClick={createJoke}
-          >
-            Submit Joke
-          </Button>
-      }
+      <form onSubmit={createJoke}>
+        <TextField
+          style={{padding: 5, margin: '5px'}}
+          placeholder="question..."
+          value={punchJoke.question}
+          name="question"
+          onChange={ (event) => {
+            setPunchJoke({...punchJoke, [event.target.name]: event.target.value });
+          }}
+        />
+        <TextField
+          style={{padding: 5, margin: '5px'}}
+          placeholder="punchline..."
+          value={punchJoke.punchline}
+          name="punchline"
+          onChange={ (event) => {
+            setPunchJoke({...punchJoke, [event.target.name]: event.target.value });
+          }}
+        />
+        {
+          saveJoke
+          ? <Button style={{padding: 5}}> Your awesome joke is saved </Button>
+          : <Button
+              style={{padding: 5, margin: "5px", position:"relative", top:"25px"}}
+              variant="outlined"
+              type="submit"
+            >
+              Submit Joke
+            </Button>
+        }
+      </form>
     </div>
   )
 }
