@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill } from 'react-icons/bs';
+// import { BiEdit } from 'react-icons/bi';
+import { MdDeleteForever } from "react-icons/md";
 
-function SavedJokes({ jokes }) {
+function SavedJokes({ jokes, deleteJoke }) {
   const [current, setCurrent] = useState(0);
   const length = jokes.length - 1;
 
@@ -28,11 +30,20 @@ function SavedJokes({ jokes }) {
               {
                 index === current &&
                 (
-                  <>
+                  <div style={{background:"yellow"}}>
+                    <MdDeleteForever
+                      style={{
+                        position:'relative',
+                        left: '48%',
+                        top: '5',
+                        cursor:'pointer',
+                      }}
+                      onClick={()=> deleteJoke(index)}
+                    />
                     <h4 style={{margin:"3px"}}>{joke.question}</h4>
                     <h4>Punchline : </h4> {joke.punchline}
 
-                  </>
+                  </div>
                 )
               }
             </div>

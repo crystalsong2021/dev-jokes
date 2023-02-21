@@ -2,7 +2,7 @@ import './App.css';
 import googleOneTap from 'google-one-tap';
 import React, { useEffect, useState} from 'react';
 import { db } from './firebase/firebaseConfig';
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc, arrayRemove, updateDoc } from "firebase/firestore";
 import SubmitJokes from './components/SubmitJoke';
 import GenerateJokes from './components/GenerateJokes';
 import SavedJokes from './components/SavedJokes';
@@ -43,12 +43,21 @@ function App() {
           picture: loginUser.picture,
           jokes: []
       })
-    }
+    };
   };
 
   const updateJokes = (punchJoke) => {
     setJokes([punchJoke, ...jokes]);
-  }
+  };
+
+  const deleteJoke = async (index) => {
+    console.log('deleteJoke at index: ', index)
+    const documentRef = doc(db, "users", documentID);
+    await updateDoc(documentRef, {
+      jokes: arrayRemove(jokes[index])
+    });
+    getJokes();
+  };
 
   const jokesRef = collection(db, "users");
 
@@ -108,7 +117,10 @@ function App() {
         </header>
         <div className="bodyContainer">
           <div className="SavedJokes">
-              <SavedJokes jokes={jokes}/>
+              <SavedJokes
+                jokes={jokes}
+                deleteJoke={deleteJoke}
+              />
           </div>
           <div className="GenerateJokes">
             <GenerateJokes

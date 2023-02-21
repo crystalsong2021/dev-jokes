@@ -32,6 +32,7 @@ function SubmitJokes({documentID, updateJokes}) {
           value={punchJoke.question}
           name="question"
           onChange={ (event) => {
+            setSaveJoke(false);
             setPunchJoke({...punchJoke, [event.target.name]: event.target.value });
           }}
         />
@@ -41,6 +42,7 @@ function SubmitJokes({documentID, updateJokes}) {
           value={punchJoke.punchline}
           name="punchline"
           onChange={ (event) => {
+            setSaveJoke(false);
             setPunchJoke({...punchJoke, [event.target.name]: event.target.value });
           }}
         />
